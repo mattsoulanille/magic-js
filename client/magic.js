@@ -2,9 +2,10 @@
 
 var stage = new PIXI.Container();
 
-var renderer = PIXI.autoDetectRenderer(window.innerWidth, window.innerHeight,{backgroundColor : 0xffffff}, {
-    resolution: window.devicePixelRatio || 1,
-    autoResize: true
+var renderer = PIXI.autoDetectRenderer(window.innerWidth, window.innerHeight,
+				       {backgroundColor : 0xffffff,
+					resolution: window.devicePixelRatio || 1,
+					autoResize: true
 });
 
 document.body.appendChild(renderer.view);
