@@ -5,9 +5,9 @@ function counter(initialValue,Name) {
     this.name = Name;
 }
 
-counter.prototype.inc(){
+counter.prototype.inc = function(){
     this.value += 1;
 }
-counter.prototype.dec(){
+counter.prototype.dec = function(){
     this.value -= 1;
 }
