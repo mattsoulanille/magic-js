@@ -7,7 +7,7 @@ function card(name,types) {
     this.tapped = false;
     this.types = types;
     this.flipped = false;
-    card.prototype.buildGraphics();
+    this.buildGraphics();
 }
 
 card.prototype.scale = 0.5;
@@ -36,7 +36,9 @@ card.prototype.findCounter = function(name){
 
 card.prototype.buildGraphics = function() {
     this.container = new PIXI.Container();
-    this.cardSprite = new PIXI.Sprite.fromImage('images/back.jpg');
+    this.backTexture = new PIXI.Texture.fromImage('images/back.jpg');
+    this.frontTexture = new PIXI.Texture.fromImage('images/cards/' + this.name + '.jpg');
+    this.cardSprite = new PIXI.Sprite(this.backTexture);
     this.cardSprite.interactive = true;
     this.cardSprite.anchor.x = 0.5;
     this.cardSprite.anchor.y = 0.5;
@@ -48,33 +50,41 @@ card.prototype.buildGraphics = function() {
     this.buildActions();
     
 }
+card.prototype.cardDimensions = {};
+card.prototype.cardDimensions.x = 150;
+card.prototype.cardDimensions.y = 208;
 
-card.prototype.tap = function() {
-
-    if (this.tapped) {
-	this.tapped = false;
+card.prototype.flip = function() {
+    this.flipped = !this.flipped;
+    var texture;
+    if (this.flipped) {
+	texture = this.frontTexture;
     }
     else {
-	this.tapped = true;
+	texture = this.backTexture;
+    }
+
+    this.cardSprite.scale.x = this.cardDimensions.x / texture._frame.width;
+    this.cardSprite.scale.y = this.cardDimensions.y / texture._frame.height;
+    this.cardSprite.texture = texture;
+}
+
+card.prototype.tap = function() {
+    this.tapped = !this.tapped;
+
+    if (this.tapped) {
+	this.container.rotation = Math.PI/2;
+    }
+    else {
+	this.container.rotation = 0;
     }
 }
 
 
 
 card.prototype.buildActions = function() {
-    var tap = function() {
-	this.tap();
-	if (this.tapped) {
-	    this.container.rotation = Math.PI/2;
-	}
-	else {
-	    this.container.rotation = 0;
-	}
-    }.bind(this);
 
-    
-    this.cardSprite.on('mousedown', tap);
-    this.cardSprite.on('touchstart', tap);
-
+    this.cardSprite.on('click', this.tap.bind(this));
+    this.cardSprite.on('touch', this.tap.bind(this));
 
 }

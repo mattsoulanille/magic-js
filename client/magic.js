@@ -15,7 +15,7 @@ window.onresize = function() {
 		
 
 
-var testCard = new card("test", ["not real"]);
+var testCard = new card("last", ["not real"]);
 testCard.container.position.x = 200;
 testCard.container.position.y = 200;
 stage.addChild(testCard.container);
