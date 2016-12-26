@@ -23,6 +23,7 @@ library.prototype.draw = function (n){
     for (var i = 0; i < n; i++){
 	cardsDrawn.push(this.popCard());
     }
+    this.cards[this.cards.length-1].draggable = true;
     return cardsDrawn;
 }
 
@@ -40,6 +41,7 @@ library.prototype.shuffle = function (){
     for (var i = 0; i < this.cards.length; i++){
 	this.container.removeChild(this.cards[i].container);
 	this.container.addChild(this.cards[i].container);
+	this.cards[i].draggable = ( i == this.cards.length-1);
     }
 }
 
@@ -51,5 +53,8 @@ library.prototype.insertRandomly = function (card){
     var p = Math.floor(Math.random() * this.cards.length)
     this.cards.splice(p,0,card);
     this.container.addChildAt(card.container,p);
+    for (var i = 0; i < this.cards.length; i++){
+	this.cards[i].draggable = ( i == this.cards.length-1);
+    }
 }
 

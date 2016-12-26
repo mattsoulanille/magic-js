@@ -8,6 +8,7 @@ function card(name,types) {
     this.types = types;
     this.flipped = false;
     this.buildGraphics();
+    this.draggable = false;
 }
 
 card.prototype.scale = 0.5;
