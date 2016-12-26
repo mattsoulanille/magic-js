@@ -8,7 +8,6 @@ function card(name,types) {
     this.types = types;
     this.flipped = false;
     this.buildGraphics();
-    this.draggable = false;
 }
 
 card.prototype.scale = 0.5;
@@ -85,38 +84,59 @@ card.prototype.tap = function() {
 
 card.prototype.buildActions = function() {
 
-    this.cardSprite.on('click', this.tap.bind(this));
-    this.cardSprite.on('tap', this.tap.bind(this));
+//    this.cardSprite.on('click', this.tap.bind(this));
+//    this.cardSprite.on('tap', this.tap.bind(this));
 
     var onDragStart = function(event) {
-    // store a reference to the data
-    // the reason for this is because of multitouch
-    // we want to track the movement of this particular touch
+	// store a reference to the data
+	// the reason for this is because of multitouch
+	// we want to track the movement of this particular touch
 	this.data = event.data;
-	this.dragPoint = new PIXI.Point(this.data.global.x - this.parent.position.x,
-					this.data.global.y - this.parent.position.y);
-	this.alpha = 0.5;
-	this.dragging = true;
-    }
+	this.startPoint = this.data.getLocalPosition(this.container.parent);
+	this.dragPoint = new PIXI.Point(this.startPoint.x - this.container.position.x,
+					this.startPoint.y - this.container.position.y);
+
+
+	this.dragging = false;
+	this.startedDrag = true;
+    }.bind(this);
     
     var onDragEnd = function() {
-	this.alpha = 1;
-	
+
+	var dist2 = function(p1,p2) {
+	    return Math.pow(p1.x - p2.x, 2) + Math.pow(p1.y - p2.y, 2);
+	}
+
+	if ( !this.dragging ) {
+	    this.tap();
+	}
+
+	this.container.alpha = 1;
 	this.dragging = false;
-	
+	this.startedDrag = false;
 	// set the interaction data to null
 	this.data = null;
 	this.dragPoint = null;
-    }
+	this.startPoint = null;
+    }.bind(this);
 
     var onDragMove = function() {
+	var dist2 = function(p1,p2) {
+	    return Math.pow(p1.x - p2.x, 2) + Math.pow(p1.y - p2.y, 2);
+	}
+
+	if ( (this.startedDrag) && (!this.dragging) &&
+	     dist2(this.startPoint, this.data.getLocalPosition(this.container.parent)) > 100 ) {
+	    this.dragging = true;
+	    this.container.alpha = 0.5;
+	}
 	if (this.dragging)
 	{
-            var newPosition = this.data.getLocalPosition(this.parent.parent);
-            this.parent.position.x = newPosition.x - this.dragPoint.x;
-            this.parent.position.y = newPosition.y - this.dragPoint.y;
+            var newPosition = this.data.getLocalPosition(this.container.parent);
+            this.container.position.x = newPosition.x - this.dragPoint.x;
+            this.container.position.y = newPosition.y - this.dragPoint.y;
 	}
-    }
+    }.bind(this);
     
     this.cardSprite
         // events for drag start
