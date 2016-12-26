@@ -15,6 +15,16 @@ zone.prototype.removeCardsOutsideArea = function (x,y,w,h){
     }
     return cardsTaken;
 }
+zone.prototype.removeCardsInsideArea = function (x,y,w,h){
+    var cardsTaken = [];
+    for (var i = 0; i < this.cards.length; i++){
+	if (!((this.cards[i].container.position.x < x | this.cards[i].container.position.x > x + w) | (this.cards[i].container.position.y < y | this.cards[i].container.position.y > y + h))){
+	    cardsTaken.push(this.cards.splice(i,1));
+	    this.container.removeChild(cardsTaken[cardsTaken.length-1]);
+	}
+    }
+    return cardsTaken;
+}
 
 
 zone.prototype.addCard = function (card){
