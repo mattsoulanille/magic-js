@@ -7,7 +7,7 @@ function library(cards) {
 
 library.prototype = new zone;
 
-library.prototype.animate = function (x,y){
+library.prototype.animate = function (x,y,w,h){
     var dx = x;
     var dy = y;
     for (var i = 0; i < this.cards.length; i++){
