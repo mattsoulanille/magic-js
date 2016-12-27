@@ -15,8 +15,8 @@ hand.prototype.animate = function (x,y,w,h,selectedCardIndex,renderingPlayersHan
 	this.cards[i].container.position.x = x + (w/this.cards.length)*i;
 	this.cards[i].container.position.y = y ;
 	var aspectRatio = this.cards[i].container.height/this.cards[i].container.width;
-	this.cards[i].container.scale.x = min((w/this.cards.length),(h/aspectRatio))/this.cards[i].container.width;
-	this.cards[i].container.scale.y = min((w/this.cards.length),(h/aspectRatio))/this.cards[i].container.width;
+	this.cards[i].container.scale.x = Math.min((w/this.cards.length),(h/aspectRatio))/this.cards[i].container.width;
+	this.cards[i].container.scale.y = Math.min((w/this.cards.length),(h/aspectRatio))/this.cards[i].container.width;
 	if (i == selectedCardIndex) {
 	    this.cards[i].container.scale.x = ((h+5)/aspectRatio)/this.cards[i].container.width;
 	    this.cards[i].container.scale.y = ((h+5)/aspectRatio)/this.cards[i].container.width;

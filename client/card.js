@@ -7,6 +7,7 @@ function card(name,types) {
     this.tapped = false;
     this.types = types;
     this.flipped = false;
+    this.draggable = false;
     this.buildGraphics();
 }
 
@@ -109,20 +110,22 @@ card.prototype.buildActions = function() {
     }.bind(this);
 
     var onDragMove = function() {
-	var dist2 = function(p1,p2) {
-	    return Math.pow(p1.x - p2.x, 2) + Math.pow(p1.y - p2.y, 2);
-	}
+	if (this.draggable) {
+	    var dist2 = function(p1,p2) {
+		return Math.pow(p1.x - p2.x, 2) + Math.pow(p1.y - p2.y, 2);
+	    }
 
-	if ( (typeof this.drag !== 'undefined') && (this.drag.startedDrag) && (!this.drag.dragging) &&
-	     dist2(this.drag.startPoint, this.drag.data.getLocalPosition(this.container.parent)) > 100 ) {
-	    this.drag.dragging = true;
-	    this.container.alpha = 0.5;
-	}
-	if ( (typeof this.drag !== 'undefined') && (this.drag.dragging)) {
-	    
-            var newPosition = this.drag.data.getLocalPosition(this.container.parent);
-            this.container.position.x = newPosition.x - this.drag.dragPoint.x;
-            this.container.position.y = newPosition.y - this.drag.dragPoint.y;
+	    if ( (typeof this.drag !== 'undefined') && (this.drag.startedDrag) && (!this.drag.dragging) &&
+		 dist2(this.drag.startPoint, this.drag.data.getLocalPosition(this.container.parent)) > 100 ) {
+		this.drag.dragging = true;
+		this.container.alpha = 0.5;
+	    }
+	    if ( (typeof this.drag !== 'undefined') && (this.drag.dragging)) {
+
+		var newPosition = this.drag.data.getLocalPosition(this.container.parent);
+		this.container.position.x = newPosition.x - this.drag.dragPoint.x;
+		this.container.position.y = newPosition.y - this.drag.dragPoint.y;
+	    }
 	}
     }.bind(this);
     

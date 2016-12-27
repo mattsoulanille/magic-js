@@ -2,8 +2,12 @@
 
 
 function zone(cards) {
-    this.cards = cards;
+    var cards = cards || [];
+    this.cards = [];
     this.container = new PIXI.Container();
+    cards.forEach(function(value, index) {
+	this.addCard(value);
+    }.bind(this));
 }
 zone.prototype.removeCardsOutsideArea = function (x,y,w,h){
     var cardsTaken = [];
