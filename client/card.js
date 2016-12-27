@@ -57,6 +57,24 @@ card.prototype.cardDimensions.y = 208;
 
 card.prototype.flip = function() {
     this.flipped = !this.flipped;
+    this.animate();
+}
+
+card.prototype.tap = function() {
+    this.tapped = !this.tapped;
+    this.animate();
+}
+
+
+card.prototype.animate = function() {
+    
+    if (this.tapped) {
+	this.container.rotation = Math.PI/2;
+    }
+    else {
+	this.container.rotation = 0;
+    }
+
     var texture;
     if (this.flipped) {
 	texture = this.frontTexture;
@@ -69,19 +87,6 @@ card.prototype.flip = function() {
     this.cardSprite.scale.y = this.cardDimensions.y / texture._frame.height;
     this.cardSprite.texture = texture;
 }
-
-card.prototype.tap = function() {
-    this.tapped = !this.tapped;
-
-    if (this.tapped) {
-	this.container.rotation = Math.PI/2;
-    }
-    else {
-	this.container.rotation = 0;
-    }
-}
-
-
 
 card.prototype.buildActions = function() {
 
@@ -128,7 +133,7 @@ card.prototype.buildActions = function() {
 	    }
 	}
     }.bind(this);
-    
+
     this.cardSprite
         // events for drag start
         .on('mousedown', onDragStart)
